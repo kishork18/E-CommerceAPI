@@ -2,7 +2,12 @@ package com.ecommerce.entity;
 
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -18,15 +23,16 @@ public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    
+    @Column(unique = true, nullable = false)
     private String title;
     private String description;
     private double price;
-    private boolean available;
-    
+    @Enumerated(EnumType.STRING)
+    private Available available;
+//    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "category_id")
-    private Category category;
+    private Category category ;
     
-    // Constructors, getters, setters
+   
 }

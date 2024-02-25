@@ -20,50 +20,67 @@ import com.ecommerce.service.UserService;
 public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepository ur;
-    @Autowired
+	@Autowired
 	private RolesAndAuthorityService ras;
 
 	@Override
 	public User addUser(User user) throws UserException {
-	 Optional<User> userop= ur.findByEmail(user.getEmail());
-	 if(userop.isPresent()) {
-		 throw new UserException("User with same email is already present please try with differnt email");
-	 }
-	    user.setRegistrationDate(LocalDate.now());
-	    Set<RolesAndAuthority> set= user.getAuthSet();
-	    Set<RolesAndAuthority> managedSet= new HashSet<>();
-	    for(RolesAndAuthority roles:set) {
-	    	managedSet.add(ras.findByName(roles.getName()));
-	    }
-	    user.setAuthSet(managedSet);
+		Optional<User> userop = ur.findByEmail(user.getEmail());
+		if (userop.isPresent()) {
+			throw new UserException("User with "+user.getEmail() + " is already present please try with differnt email");
+		}
+		user.setRegistrationDate(LocalDate.now());
+		Set<RolesAndAuthority> managedSet = new HashSet<>();
+
+		managedSet.add(ras.findByName("ROLE_USER"));
+
+		user.setAuthSet(managedSet);
 		return ur.save(user);
 	}
 
 	@Override
 	public User update(User user) throws UserException {
-		Optional<User> useropt= ur.findByEmail(user.getEmail());
-		if(!useropt.isPresent()) {
+		Optional<User> useropt = ur.findByEmail(user.getEmail());
+		if (!useropt.isPresent()) {
 			throw new UserException("Provided email is not register!");
 		}
-		return null;
+		User us=useropt.get();
+		Set<RolesAndAuthority> set = user.getAuthSet();
+		Set<RolesAndAuthority> managedSet = us.getAuthSet();
+		for (RolesAndAuthority roles : set) {
+			managedSet.add(ras.findByName(roles.getName()));
+		}
+	
+		us.setAuthSet(managedSet);
+		return ur.save(us);
 	}
 
 	@Override
 	public List<User> findAllUser() throws UserException {
-		// TODO Auto-generated method stub
-		return null;
+		List<User> list= ur.findAll();
+		if(list.isEmpty()) {
+			throw new UserException("No user any user found register");
+		}
+		return list;
 	}
 
 	@Override
 	public User findByEmail(String email) throws UserException {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<User> user= ur.findByEmail(email);
+		if(!user.isPresent()) {
+			throw new UserException("user not found with "+email );
+		}
+		return user.get();
 	}
 
 	@Override
 	public User deltUser(String email) throws UserException {
-		// TODO Auto-generated method stub
-		return null;
+		Optional<User> user= ur.findByEmail(email);
+		if(!user.isPresent()) {
+			throw new UserException("user not found with "+email );
+		}
+		ur.delete(user.get());
+		return user.get();
 	}
 
 }

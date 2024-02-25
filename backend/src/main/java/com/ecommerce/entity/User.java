@@ -43,14 +43,12 @@ public class User implements UserDetails,CredentialsContainer{
 	    @NotBlank(message = "you must provide the customer name")
 		@Size(min = 2, message="name must be of 2 characters at least")
 		private String name;
-	    @NotBlank(message = "you must provide the customer email")	
-		@Pattern(regexp = "[a-z0-9.]+@[a-z0-9.]+\\\\.[a-z] {2,3}", flags = Flag.CASE_INSENSITIVE,
-				message="Invaid email id")
+	    
 	    @Column(nullable = false,unique = true)
 	    private String email;
 	    @JsonProperty(access = Access.WRITE_ONLY)
 	    private String password;
-	    @JsonIgnore
+//	    @JsonIgnore
 	    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	    @JoinTable(name = "userAuth", joinColumns = @JoinColumn(referencedColumnName = "userId"),
 	    inverseJoinColumns = @JoinColumn(referencedColumnName = "id"))
