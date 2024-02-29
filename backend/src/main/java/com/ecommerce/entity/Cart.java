@@ -2,8 +2,11 @@ package com.ecommerce.entity;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -24,9 +27,9 @@ public class Cart {
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
-    
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL)
+    @JsonManagedReference
+    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL ,fetch = FetchType.EAGER)
     private List<CartItem> cartItems;
     
-    // Constructors, getters, setters
+    
 }

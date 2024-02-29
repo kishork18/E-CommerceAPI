@@ -2,7 +2,7 @@ package com.ecommerce.entity;
 
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -24,7 +24,9 @@ public class Category {
     private Long id;
     @Column(unique = true, nullable = false)
     private String name;
-  @JsonIgnore
+   
+    @JsonManagedReference
+//   @JsonIgnore
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
     private List<Product> products;
     

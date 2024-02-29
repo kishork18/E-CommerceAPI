@@ -2,7 +2,9 @@ package com.ecommerce.entity;
 
 
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,7 +31,7 @@ public class Product {
     private double price;
     @Enumerated(EnumType.STRING)
     private Available available;
-//    @JsonIgnore
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category ;

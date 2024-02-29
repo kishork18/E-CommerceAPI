@@ -1,6 +1,7 @@
 package com.ecommerce.service.Imp;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -9,6 +10,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.ecommerce.entity.Cart;
 import com.ecommerce.entity.RolesAndAuthority;
 import com.ecommerce.entity.User;
 import com.ecommerce.exception.UserException;
@@ -35,6 +37,11 @@ public class UserServiceImpl implements UserService {
 		managedSet.add(ras.findByName("ROLE_USER"));
 
 		user.setAuthSet(managedSet);
+		
+		Cart cart= new Cart();
+		cart.setCartItems(new ArrayList<>());
+		cart.setUser(user);
+		user.setCart(cart);
 		return ur.save(user);
 	}
 

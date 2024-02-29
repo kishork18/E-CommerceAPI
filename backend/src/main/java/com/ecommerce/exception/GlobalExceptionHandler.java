@@ -28,5 +28,10 @@ public class GlobalExceptionHandler {
        	return new ResponseEntity<ErrorDetails>(errordetails, HttpStatus.BAD_REQUEST);
 
    	}
-    
+    @ExceptionHandler(CartException.class)
+   	public ResponseEntity<ErrorDetails> handleCartexception(CartException exc, WebRequest request) {
+       	ErrorDetails errordetails= new ErrorDetails(LocalDateTime.now(), exc.getMessage(), request.getDescription(false));
+       	return new ResponseEntity<ErrorDetails>(errordetails, HttpStatus.BAD_REQUEST);
+
+   	}
 }

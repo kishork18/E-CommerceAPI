@@ -42,7 +42,6 @@ public class UserController {
 		String hashpass = passencode.encode(user.getPassword());
 		user.setPassword(hashpass);
 		user.setOrders(new ArrayList<>());
-		user.setCart(new Cart());
 		User u = us.addUser(user);
 		return new ResponseEntity<User>(u, HttpStatus.CREATED);
 	}
